@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather App</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #9cd3c2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      color: white;
+    }
+
+    .weather-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .details {
+      text-align: left;
+      font-size: 1.5rem;
+    }
+
+    .details h2 {
+      font-size: 4rem;
+      margin: 0;
+    }
+
+    .search input {
+      padding: 10px;
+      font-size: 1rem;
+      border: none;
+      border-bottom: 2px solid white;
+      background: transparent;
+      color: white;
+      outline: none;
+    }
+
+    .search button {
+      margin-left: 10px;
+      padding: 10px 15px;
+      border-radius: 15px;
+      font-size: 1rem;
+      border: 1px solid #fff;
+      background-color: white;
+      color: black;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Weather App</h1>
+    <div class="weather-info">
+      <div class="details">
+        <h2 id="temperature">--</h2>
+        <p id="city">City</p>
+        <p id="time">--:-- --</p>
+        <p id="description">--</p>
+      </div>
+      <div class="search">
+        <input type="text" id="cityInput" placeholder="Enter City">
+        <button onclick="getWeather()">Search Button</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function getWeather() {
+      const apiKey = "https://openweathermap.org/"; 
+      const city = document.getElementById("cityInput").value;
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("City not found");
+        const data = await res.json();
+
+        document.getElementById("temperature").innerText = Math.round(data.main.temp);
+        document.getElementById("city").innerText = data.name;
+        document.getElementById("description").innerText = data.weather[0].description;
+
+        const now = new Date();
+        const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+        document.getElementById("time").innerText = `${time} ${day}`;
+
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+  </script>
+
+</body>
+</html>

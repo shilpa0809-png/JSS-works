@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Clock</title>
+</head>
+<body>
+
+  <p id="demo"></p>
+
+  <button onclick="startClock()">Click me</button>
+  <button onclick="stopClock()">Stop</button>
+
+  <script>
+    let timer;
+
+    function updateTime() {
+      const now = new Date();
+      document.getElementById("demo").innerHTML = now.toString();
+    }
+
+    function startClock() {
+      updateTime();
+      timer = setInterval(updateTime, 1000);
+    }
+
+    function stopClock() {
+      clearInterval(timer);
+    }
+  </script>
+
+</body>
+</html>

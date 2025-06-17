@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Timer</title>
+  <style>
+    body {
+      background-color: #eef5fa;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #4a707a;
+      margin-bottom: 20px;
+    }
+
+    #timer {
+      font-size: 48px;
+      margin: 20px 0;
+      color: #333;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #start {
+      background-color: #90c9b0;
+    }
+
+    #stop {
+      background-color: #f44336;
+      color: white;
+    }
+
+    #reset {
+      background-color: #c0e1b7;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>TIMER</h1>
+  <div id="timer">25 : 00</div>
+
+  <div class="buttons">
+    <button id="start">START</button>
+    <button id="stop">STOP</button>
+    <button id="reset">RESET</button>
+  </div>
+
+  <script>
+    let timeLeft = 25 * 60; 
+    let timerId;
+    let isRunning = false;
+
+    function updateDisplay() {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      document.getElementById('timer').textContent = 
+        `${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`;
+    }
+
+    function startTimer() {
+      if (isRunning) return;
+      isRunning = true;
+      timerId = setInterval(() => {
+        if (timeLeft > 0) {
+          timeLeft--;
+          updateDisplay();
+        } else {
+          clearInterval(timerId);
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerId);
+      isRunning = false;
+    }
+
+    function resetTimer() {
+      stopTimer();
+      timeLeft = 25 * 60;
+      updateDisplay();
+    }
+
+    document.getElementById('start').addEventListener('click', startTimer);
+    document.getElementById('stop').addEventListener('click', stopTimer);
+    document.getElementById('reset').addEventListener('click', resetTimer);
+
+    
+    updateDisplay();
+  </script>
+
+</body>
+</html>

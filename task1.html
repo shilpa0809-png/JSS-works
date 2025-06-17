@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registration Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    form {
+      max-width: 400px;
+      margin: auto;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      display: none;
+    }
+
+    .error-border {
+      border: 1px solid red;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background-color: #eee;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <h2>Registration Form</h2>
+  <form id="registrationForm" novalidate>
+    <label>Name:
+      <input type="text" id="name" name="name">
+      <span class="error" id="nameError">This field is required</span>
+    </label>
+
+    <label>Email:
+      <input type="email" id="email" name="email">
+      <span class="error" id="emailError">A valid email address is required</span>
+    </label>
+
+    <label>Website:
+      <input type="url" id="website" name="website">
+      <span class="error" id="websiteError">A valid url is required</span>
+    </label>
+
+    <label>Message:
+      <textarea id="message" name="message" rows="4"></textarea>
+      <span class="error" id="messageError">This field is required</span>
+    </label>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const form = document.getElementById("registrationForm");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      let isValid = true;
+
+      function validateField(id, errorId, condition) {
+        const field = document.getElementById(id);
+        const error = document.getElementById(errorId);
+        if (!condition(field.value.trim())) {
+          field.classList.add("error-border");
+          error.style.display = "inline";
+          isValid = false;
+        } else {
+          field.classList.remove("error-border");
+          error.style.display = "none";
+        }
+      }
+
+      validateField("name", "nameError", val => val !== "");
+      validateField("email", "emailError", val => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val));
+      validateField("website", "websiteError", val => /^https?:\/\/.+\..+/.test(val));
+      validateField("message", "messageError", val => val !== "");
+
+      if (isValid) {
+        alert("Form submitted successfully!");
+        form.reset();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Password Generator</title>
+    <style>
+        body {
+        background-color: #3a2f2f;
+        font-family: Arial, sans-serif;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        }
+
+        .container {
+        background-color: #0d0d0d;
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        width: 400px;
+        }
+
+        h2 {
+        background-color: #eee;
+        color: black;
+        padding: 10px;
+        border-radius: 20px;
+        }
+
+        .output-box {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        }
+
+        .output-box input {
+        flex: 1;
+        padding: 10px;
+        border-radius: 20px;
+        border: none;
+        font-size: 16px;
+        }
+
+        .output-box button {
+        margin-left: 10px;
+        padding: 10px 20px;
+        border-radius: 20px;
+        border: none;
+        background-color: #eee;
+        color: black;
+        cursor: pointer;
+        }
+
+        .settings {
+        text-align: left;
+        margin-bottom: 20px;
+        }
+
+        .settings span {
+        margin-left: 10px;
+        }
+
+        .settings label {
+        display: inline-block;
+        margin: 10px 10px 0 0;
+        }
+
+        button {
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: none;
+        background-color: blue;
+        color: white;
+        cursor: pointer;
+        }
+
+    </style>
+  <script>
+    function updateLength() {
+    const length = document.getElementById('lengthRange').value;
+    document.getElementById('lengthValue').innerText = length;
+    }
+
+    function generatePassword() {
+    const length = parseInt(document.getElementById('lengthRange').value);
+    const includeChars = document.getElementById('includeChars').checked;
+    const includeNumbers = document.getElementById('includeNumbers').checked;
+
+    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*(){}[]=<>/,.";
+    const nums = "0123456789";
+
+    let charset = "";
+    if (includeChars) charset += chars;
+    if (includeNumbers) charset += nums;
+
+    if (charset.length === 0) {
+        alert("Please select at least one option (Characters or Numbers)");
+        return;
+    }
+
+    let password = "";
+    for (let i = 0; i < length; i++) {
+        password += charset.charAt(Math.floor(Math.random() * charset.length));
+    }
+
+    document.getElementById('password').value = password;
+    }
+
+    function copyPassword() {
+    const passwordField = document.getElementById('password');
+    passwordField.select();
+    document.execCommand("copy");
+    alert("Password copied!");
+    }
+  </script>
+
+
+</head>
+<body>
+  <div class="container">
+    <h2>Password - Generator</h2>
+    <div class="output-box">
+      <input type="text" id="password" readonly placeholder="Password">
+      <button onclick="copyPassword()">Copy</button>
+    </div>
+
+    <div class="settings">
+      <input type="range" min="6" max="25" value="12" id="lengthRange" oninput="updateLength()">
+      <span>Length <span id="lengthValue">12</span></span><br>
+
+      <label><input type="checkbox" id="includeChars" checked> Characters</label>
+      <label><input type="checkbox" id="includeNumbers"> Numbers</label>
+    </div>
+
+    <button onclick="generatePassword()">Generate Password</button>
+  </div>
+</body>
+</html>
